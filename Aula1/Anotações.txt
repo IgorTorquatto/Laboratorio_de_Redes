@@ -1,0 +1,46 @@
+Na aula de hoje revisamos alguns conceitos sobre o protocolo TCP:
+
+- **Aplicação (nível 7)**
+- **Apresentação (nível 6)**
+- **Sessão (nível 5)**
+- **Transporte (nível 4)**
+- **Rede (nível 3)**
+- **Enlace (nível 2)**
+- **Físico (nível 1)**
+
+No geral, os pacotes recebem cabeçalhos na camada de aplicação e, a cada camada abaixo, o pacote vai se fragmentando e recebendo outros cabeçalhos na parte do remetente. Enquanto isso, na parte do receptor, o pacote é refeito, removendo os cabeçalhos à medida que sobe pelas camadas.
+
+Cada camada tem seus protocolos específicos:
+
+- **Aplicação (HTTP, FTP, SMTP, DNS)**: Esses protocolos fornecem serviços de rede diretamente aos aplicativos dos usuários. HTTP é usado para navegação na web, FTP para transferência de arquivos, SMTP para envio de emails e DNS para resolução de nomes de domínio.
+
+- **Transporte (TCP e UDP)**: 
+  - O protocolo TCP é mais complexo, mas garante que os pacotes cheguem na ordem correta e aumenta a confiabilidade na entrega de pacotes. Ele utiliza confirmação de recebimento, controle de fluxo e controle de congestionamento para assegurar a entrega precisa dos dados.
+  - O protocolo UDP não garante a entrega de dados e não implementa ferramentas de controle de fluxo e de congestionamento, mas é utilizado em aplicações onde a velocidade é mais importante do que a confiabilidade, como streaming de vídeo e jogos online.
+
+- **Rede (IP)**: Sua principal função é determinar a rota que os dados devem seguir para chegar ao seu destino. Ele é responsável pelo endereçamento lógico (endereços IP) e roteamento dos pacotes através da rede.
+
+- **Enlace (Ethernet, MAC)**: Essa camada é responsável pela comunicação direta entre dispositivos conectados na mesma rede local. Protocolos como Ethernet definem como os pacotes são formatados e transmitidos no nível físico, enquanto os endereços MAC identificam de forma única cada dispositivo na rede.
+
+- **Físico**: Lida com a transmissão e recepção de dados brutos na forma de sinais elétricos, ópticos ou de rádio entre dispositivos de rede. Inclui especificações de hardware como cabos, conectores e frequências de sinal.
+
+### Protocolo ARP
+
+O protocolo ARP (Address Resolution Protocol) é importante porque resolve endereços IP em endereços MAC, permitindo que os dispositivos na rede local se comuniquem entre si. 
+
+- **ARP Request**: Quando um dispositivo precisa descobrir o endereço MAC associado a um endereço IP, ele envia uma mensagem ARP Request para toda a rede local. 
+- **ARP Reply**: O dispositivo com o endereço IP correspondente responde com uma mensagem ARP Reply contendo seu endereço MAC.
+
+### Tabela de Roteamento
+
+A tabela de roteamento é usada pelos roteadores para determinar o melhor caminho para encaminhar pacotes de dados em uma rede. Ela contém informações sobre redes destino e a direção em que os pacotes devem ser enviados para alcançar esses destinos.
+
+### DHCP
+
+O DHCP (Dynamic Host Configuration Protocol) é um protocolo que automatiza a atribuição de endereços IP aos dispositivos em uma rede. Ele também fornece outras configurações de rede necessárias, como máscara de sub-rede, gateway padrão e servidores DNS.
+
+### Protocolos de Roteamento
+
+- **RIP (Routing Information Protocol)**: É um protocolo de roteamento que usa a contagem de saltos como métrica para selecionar o melhor caminho. Ele é simples de configurar, pois só precisamos colocar o endereço das redes.
+
+- **OSPF (Open Shortest Path First)**: É mais complexo que o RIP porque utiliza uma abordagem baseada em link-state, onde os roteadores têm conhecimento completo da topologia da rede. O OSPF divide a rede em áreas para otimizar a eficiência e escalabilidade do roteamento.
