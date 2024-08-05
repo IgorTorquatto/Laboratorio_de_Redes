@@ -26,7 +26,7 @@ def user_stop(timer):
 
 subnet = "192.168.0.0/24"  
 
-timer = RepeatTimer(1.0, scan, [subnet])
+timer = RepeatTimer(3.0, scan, [subnet])
 timer.start()
 
 # Permitir ao usuário decidir quando parar o script
