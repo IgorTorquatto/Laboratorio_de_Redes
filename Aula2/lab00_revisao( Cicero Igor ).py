@@ -24,7 +24,7 @@ def user_stop(timer):
     timer.cancel()
     print("Scan stopped.")
 
-subnet = "192.168.0.0/24"  
+subnet = "10.0.84.0/24"  
 
 timer = RepeatTimer(3.0, scan, [subnet])
 timer.start()
