@@ -1,0 +1,61 @@
+Aula 1: Configuração de Servidor DHCP e Interfaces de Rede
+DHCP (Dynamic Host Configuration Protocol): Nesta aula, você aprendeu sobre o funcionamento do servidor DHCP, que é responsável por atribuir automaticamente os endereços IP às máquinas em uma rede local.
+Ativação das Interfaces de Rede: Foi necessário ativar as interfaces de rede dos PCs e configurar para que eles possam receber um endereço IP do servidor DHCP. Para isso, a configuração de IP nos PCs deve estar definida como "DHCP" em vez de "Static". O gateway, que é o roteador que conecta a rede local à internet, também deve ser configurado para usar DHCP.
+Pingando Dispositivos na Rede: Quando você pingou o servidor DHCP da rede 1 (onde estavam os PCs 0, 1 e 2), funcionou corretamente porque estavam na mesma rede local. No entanto, para pingar os PCs 4 e 5, que estavam em outra rede, foi necessário configurar as interfaces do roteador que conectam a rede 1 à rede 2.
+Configuração Manual de IP na Rede 2: Como a rede 2 não possui servidor DHCP, os IPs dos PCs 4, 5 e 6, assim como o gateway, tiveram que ser atribuídos manualmente. Esses dispositivos foram configurados para usar IPs estáticos.
+
+Aula 2: Monitoramento de Rede com Scapy
+Objetivo da Aula: O foco foi criar um script em Python para monitorar a rede local e identificar os dispositivos conectados a ela. Isso foi feito usando a biblioteca Scapy.
+Introdução ao Scapy: Scapy é uma biblioteca Python que permite criar, modificar, enviar e capturar pacotes de rede. Uma das grandes vantagens do Scapy é sua capacidade de manipular pacotes em um nível muito baixo, permitindo que você use e modifique protocolos de rede de acordo com as necessidades específicas.
+Script Python: O script que você criou usa a biblioteca Scapy para enviar pacotes ARP e capturar as respostas, permitindo identificar os dispositivos na rede local com seus endereços IP e MAC.
+
+Detalhamento da Função scan(ip)
+A função scan(ip) é o coração do script que realiza o escaneamento da rede. Ela envia solicitações ARP (Address Resolution Protocol) para a rede e coleta as respostas, identificando os dispositivos conectados. Vamos quebrar a função em partes e entender o que cada trecho faz:
+
+1. Impressão de Status
+
+print(f"[+] Scanning {ip}....")
+O que faz: Exibe uma mensagem informando que o escaneamento da rede está em andamento para o intervalo de IPs especificado. Isso ajuda a visualizar que o processo foi iniciado.
+2. Criação da Solicitação ARP
+
+arp_request = scapy.ARP(pdst=ip)
+O que faz: Cria um pacote ARP usando a classe ARP do Scapy.
+pdst (padrão de destino): Este campo especifica o endereço IP de destino para o qual o pacote ARP será enviado. O argumento ip define o intervalo de IPs a serem escaneados, como "10.0.84.0/24".
+
+3. Criação do Pacote Ethernet
+
+broadcast = scapy.Ether(dst="ff:ff:ff:ff:ff:ff")
+O que faz: Cria um pacote Ethernet com endereço de destino definido como ff:ff:ff:ff:ff:ff, que é o endereço MAC de broadcast. Isso significa que o pacote será enviado para todos os dispositivos na rede local.
+
+4. Combinação de Pacotes ARP e Ethernet
+
+arp_request_broadcast = broadcast/arp_request
+O que faz: Combina o pacote ARP com o pacote Ethernet. Esse pacote combinado é o que será enviado para a rede.
+
+5. Envio do Pacote e Recepção das Respostas
+
+answered_list = scapy.srp(arp_request_broadcast, timeout=3, verbose=1)[0]
+O que faz: Envia o pacote combinado usando o método srp() do Scapy, que envia pacotes na camada de enlace (Ethernet) e recebe as respostas.
+timeout=3: Define um tempo limite de 3 segundos para aguardar as respostas.
+verbose=1: Exibe informações detalhadas sobre o processo de envio e recebimento dos pacotes.
+answered_list: Armazena as respostas dos dispositivos que responderam ao pedido ARP.
+
+6. Processamento das Respostas
+
+client_list = []
+
+for packet in answered_list:
+    client_dict = {"ip": packet[1].psrc, "mac": packet[1].hwsrc}
+    client_list.append(client_dict)
+client_list: Inicializa uma lista vazia para armazenar os dispositivos conectados.
+Loop sobre answered_list: Itera sobre a lista de pacotes respondidos.
+packet[1].psrc: Obtém o endereço IP de origem (src) do dispositivo que respondeu.
+packet[1].hwsrc: Obtém o endereço MAC de origem (src) do dispositivo que respondeu.
+client_dict: Cria um dicionário que mapeia o IP e o MAC do dispositivo.
+client_list.append(client_dict): Adiciona o dicionário à lista de dispositivos.
+7. Exibição dos Resultados
+
+print(client_list)
+O que faz: Exibe a lista de dispositivos conectados à rede, mostrando seus endereços IP e MAC.
+Resumo Final
+A função scan(ip) realiza um escaneamento na rede local enviando pacotes ARP para todos os dispositivos no intervalo de IPs especificado. Os dispositivos que estão ativos respondem com seus endereços IP e MAC, e esses dados são coletados e exibidos. A Scapy permite manipular pacotes em um nível muito baixo, o que torna esse tipo de escaneamento possível.

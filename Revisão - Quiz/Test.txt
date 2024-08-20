@@ -1,0 +1,62 @@
+Aula 1:
+
+Vimos o funcionamento de um servidor dhcp que configura os ips das máquinas automaticamente em uma rede local
+temos que ativar a interface de rede dos pcs e configurar os pcs para que eles saibam que existe um servidor dhcp
+no caso o ip configuration dos pcs devem ser "DHCP" ao invés de "static", assim como o gateway também
+
+Quando pingamos o servidor dhcp da rede 1 ues está na mesma rede local do pc0,pc1 e pc2 ele funciona corretamente, porém para pingar o pc4 e pc5 que estão em outra rede nós precisamos configurar as interfaces do roteador
+precisamos atribuir ip e mascara para interface do roteador que interliga a rede1 com a rede2
+
+A rede2 não possui servidor dhcp, assim devemos atribuir manualmente o ip nas máquinas pc4,pc5 e pc6 assim como também o gateway também deve ser inserido manualmente no tipo "static" e não dhcp
+
+Aula2:
+Na aula 2 o objetivo era criar um script em Python para escutar a rede local e observar quem está conectado a ela. A ideia é aplicar o conhecimento sobre os diferentes cabeçalhos que encontramos ao longo das camadas para criar um pacote.
+ Para isso, usamos a biblioteca scapy do Python
+
+Scapy é uma biblioteca feita em Python, com seu próprio interpretador de linha de comando
+(CLI), que permite criar, modificar, enviar e capturar pacotes de rede.
+A principal vantagem do Scapy é que, ao contrário de outras ferramentas, ele nos oferece a
+capacidade de modificar pacotes de rede em um nível baixo, permitindo usar protocolos de rede
+existentes e parametrizá-los com base em nossas necessidades. 
+
+import scapy.all as scapy
+from threading import Timer
+
+class RepeatTimer(Timer):
+    def run(self):
+        while not self.finished.wait(self.interval):
+            self.function(*self.args, **self.kwargs)
+
+def scan(ip):
+    print(f"[+] Scanning {ip}....")
+    arp_request = scapy.ARP(pdst=ip) 
+    broadcast = scapy.Ether(dst="ff:ff:ff:ff:ff:ff") 
+    arp_request_broadcast = broadcast/arp_request 
+    answered_list = scapy.srp(arp_request_broadcast, timeout=3, verbose=1)[0] 
+    client_list = []
+
+    for packet in answered_list:
+        client_dict = {"ip": packet[1].psrc, "mac": packet[1].hwsrc}
+        client_list.append(client_dict)
+    print(client_list)
+
+def user_stop(timer):
+    input("Press Enter to stop the scan...\n")
+    timer.cancel()
+    print("Scan stopped.")
+
+subnet = "10.0.84.0/24"  
+
+timer = RepeatTimer(3.0, scan, [subnet])
+timer.start()
+
+# Permitir ao usuário decidir quando parar o script
+user_stop(timer)
+
+
+Aula3:
+observar a operação do Spanning Tree Protocol em uma rede comutada simples que possui caminhos redundantes 
+Consideramos apenas as informações sobre as portas Gigabit porque as
+portas Fast Ethernet são portas de acesso que possuem dispositivos finais
+conectados e não fazem parte da árvore de topologia ativa construída pelo
+STP. 
