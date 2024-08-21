@@ -1,0 +1,63 @@
+O **STP (Spanning Tree Protocol)** é um protocolo de rede que garante a eliminação de loops de rede em uma topologia de comutação. Foi originalmente padronizado como IEEE 802.1D.
+
+### Como Funciona o STP:
+
+1. **Loops de Rede**: Em redes que utilizam switches (comutadores), os loops podem ocorrer quando existem múltiplos caminhos redundantes entre switches. Esses loops podem causar uma série de problemas, como transmissão infinita de frames (broadcast storms), frames duplicados e a sobrecarga da rede, levando-a a ficar inutilizável.
+
+2. **Eleição do Root Bridge**:
+   - O STP começa elegendo um switch para ser a "Root Bridge" (ponte raiz) da rede. 
+   - A Root Bridge é o switch com o menor Bridge ID, que é composto por uma prioridade (configurável) e o endereço MAC do switch.
+
+3. **Cálculo dos Caminhos Mais Curtos**:
+   - Uma vez que a Root Bridge é eleita, todos os switches na rede calculam o caminho mais curto (em termos de custo do caminho) para alcançar a Root Bridge.
+   - Cada porta do switch é configurada como "Root Port" (porta raiz) se ela oferece o caminho mais curto até a Root Bridge.
+
+4. **Desativação de Links Redundantes**:
+   - Para eliminar loops, o STP desativa as portas em alguns switches que formariam um loop. Essas portas são colocadas em estado de bloqueio, onde não encaminham pacotes, evitando assim o loop.
+   - Apenas um caminho ativo entre dois dispositivos é mantido, e os caminhos redundantes são mantidos como backup no caso de falha do caminho principal.
+
+5. **Estados das Portas no STP**:
+   - **Blocking**: Não encaminha frames nem aprende endereços MAC, apenas monitora os BPDU (Bridge Protocol Data Units).
+   - **Listening**: A porta ouve BPDU, mas ainda não encaminha frames.
+   - **Learning**: A porta começa a aprender endereços MAC, mas ainda não encaminha frames.
+   - **Forwarding**: A porta encaminha frames e aprende endereços MAC.
+   - **Disabled**: A porta não participa do STP e não encaminha frames.
+
+6. **Recuperação de Falhas**:
+   - Se o caminho principal falhar, o STP reativa um dos caminhos redundantes (que estava em estado de bloqueio) para manter a rede funcional.
+
+### Importância do STP:
+O STP é crucial para redes que usam switches com múltiplos caminhos redundantes, pois garante que a rede continue funcionando de maneira eficiente sem ser prejudicada por loops de rede. Ele é amplamente utilizado em ambientes LAN para garantir a alta disponibilidade e resiliência da rede.
+
+### Variações do STP:
+- **RSTP (Rapid Spanning Tree Protocol)**: Uma versão melhorada do STP, definida pela norma IEEE 802.1w, que converge mais rapidamente após uma mudança de topologia na rede.
+- **MSTP (Multiple Spanning Tree Protocol)**: Definido pela norma IEEE 802.1s, permite a criação de múltiplas instâncias de STP, cada uma protegendo um conjunto diferente de VLANs, melhorando a eficiência em redes VLAN.
+
+O STP é essencial para manter a integridade e o desempenho de redes comutadas, especialmente em ambientes complexos com redundância.
+
+A **árvore geradora mínima** (ou **árvore de expansão mínima**, em inglês **Minimum Spanning Tree** - MST) e o **Spanning Tree Protocol** (STP) estão intimamente relacionados, pois ambos se baseiam no conceito de criar uma estrutura de rede que conecta todos os nós (ou dispositivos) sem formar ciclos ou loops, utilizando o menor número de conexões ou com o menor "custo" possível.
+
+### Relação entre MST e STP
+
+1. **Conceito de Árvore Geradora Mínima**:
+   - Uma árvore geradora mínima em um grafo é uma subárvore que conecta todos os nós (ou vértices) do grafo usando o menor número de arestas ou com o menor "custo" total possível, sem formar ciclos.
+   - Este conceito é utilizado em diversas áreas, como redes de computadores, para garantir a eficiência de interconexões sem redundâncias desnecessárias.
+
+2. **STP e a Criação de uma Árvore de Expansão**:
+   - O Spanning Tree Protocol (STP) é um protocolo usado em redes de switches para evitar loops. Ele faz isso criando uma estrutura em árvore que interliga todos os switches da rede sem loops.
+   - O processo do STP para criar essa árvore de expansão envolve desativar portas em alguns switches para garantir que exista apenas um caminho ativo entre quaisquer dois dispositivos na rede, evitando ciclos.
+
+3. **Árvore Geradora Mínima no Contexto do STP**:
+   - O STP essencialmente constrói uma "árvore geradora" que interconecta todos os switches da rede. A ideia é que essa árvore deve ter o menor "custo" possível (onde o custo pode ser baseado na largura de banda, atraso, ou outro parâmetro configurável).
+   - O "custo" do caminho no STP é determinado por vários fatores, como a velocidade das portas. O protocolo seleciona os caminhos com o menor custo cumulativo para criar a árvore de expansão.
+
+4. **Processo de STP para Criar a Árvore**:
+   - **Eleição da Root Bridge**: STP inicia elegendo a "Root Bridge" (ponte raiz) com base no menor Bridge ID.
+   - **Cálculo dos Caminhos Menores**: Cada switch calcula o caminho de menor custo até a Root Bridge, e essas rotas formam a espinha dorsal da árvore geradora.
+   - **Bloqueio de Portas**: Para eliminar loops, o STP bloqueia as portas que não fazem parte do caminho de menor custo, garantindo que a topologia resultante seja uma árvore (sem ciclos) com o menor custo.
+
+### Resumo
+
+- A **árvore geradora mínima** é uma estrutura teórica que conecta todos os nós de uma rede ou grafo com o menor custo e sem formar ciclos.
+- O **STP** implementa este conceito ao criar uma árvore de expansão que conecta todos os switches da rede de forma eficiente, bloqueando as conexões que causariam loops e utilizando caminhos de menor custo.
+- Portanto, o STP é uma aplicação prática do conceito de árvore geradora mínima no contexto de redes de computadores, garantindo que a rede funcione de maneira eficiente e sem loops.
