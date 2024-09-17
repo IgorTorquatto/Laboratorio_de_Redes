@@ -1,0 +1,91 @@
+DHCP é um protocolo cliente servidor que fornece endereços ips e outros parâmetros de forma automática para máquinas em uma rede
+- evita erros e conflitos e é bom para escalabilidade
+- automatização
+
+Visão geral:
+cliente envia uma mensagem de pedido ao servidor
+servidor gerencia a faixa de endereços da sua rede e os parâmetros para a configuração da interface de rede
+servidor responde o pedido do cliente enviando o IP e parâmetros necessários
+
+Modos de operação:
+automático: qaundo uma máquina se conceta a uma rede um endereço ip é lhe atruibuido de forma automatica a parti de uma faixa de endereços ips configurada no servidor dhcp
+dinâmico: O ip é atribuido de forma automatica porém ele tem validade que é configurada pelo administrador da rede
+manual: Um ip se associa a um endereço mac. Cada máquina com um MAc registrado no servidor dhcp terá o mesmo endereço ip atribuído.
+
+DORA:
+Mensagens ( PDUs ) DHCP:
+Discover -> cliente envia uma mensagem para saber se tem um servidor dhcp na rede.
+
+MAC de destino : FFFFFFFFFFFF (12)
+MAC fonte: MAC do cliente
+ip de origem: 0.0.0.0
+ip de destino : 255.255.255.255 broadcast
+Identificador -> mac do cliente
+
+Tanto MAC quanto ip de destino são do tipo broadcast, como o cliente ainda não tem ip ele manda zerado porém ele envia seu enreço MAC
+
+OFFER:
+O servidor envia uma oferta que é o ip que ele pode oferecer a essa máquina junto com os parâmetros de dns e gateway. Se existe mais de um servidor o cliente recebe a primeira mensagem dhcp de oferta que chegar.
+
+MAC de destino : FFFFFFFFFFFF (12)
+MAC fonte: MAC do servidor
+ip de origem: ip do servidor
+ip de destino : 255.255.255.255 broadcast
+Identificador  do servidor -> ip do servidor
+Identificador do cliente -> mac do cliente
+ip oferecido -> campo com ip oferecido
+Lase -> tamanho em hora do aluguel daquele ip
+
+Então agora o servidor que envia uma mensagem de oferta em broadcast ( MAC e ip de destino) para que a máquina que mandou a mensagem de discover receba
+ele envia o ip ofertado junto com outros parâmetors e o lease
+A única identificação do cliente é seu mac , o servidor também eniva seu prórpio mac e ip para ser identificado
+
+
+Request:
+O cliente antes de aceitar a oferta do servidor envia um gratuitos arp para saber se algum pc naquala rede possui esse endereço ip ofertado pelo servidor dhcp. Caso não receba resposta o client manda um request para o servidor para que ele fique com aquele endereço ip ofertado
+
+MAC de destino : FFFFFFFFFFFF (12)
+MAC fonte: MAC do cliente
+ip de origem: 0.0.0.0
+ip de destino : 255.255.255.255 broadcast
+Identificador  do servidor -> ip do servidor
+Identificador do cliente -> mac do cliente
+ip do request -> campo com ip oferecido
+
+Então agora o cleinte primeiro manda um arp gratuitos na rede para saber se alguém já possui o endereço ip ofertado pelo server dhcp, se não obtiver resposta , o client faz o request com o ip oferecido no offer, ele manda a mensagem com destino de broadcast tanto de mac quanto de ip e seu ip de origem ainda é 0 porque o servidor ainda tem que aceitar para que esse campo mude
+
+
+
+ACK:
+
+Servidor manda mensagem dhcp ack para o cliente confirmando qeue aquele ip foi reservado para ele e o server associa o seu identficador do cliente (MAC) com o endereço ip do request que também já foi a da offer
+
+MAC de destino: FFFFFFFFFFFF
+MAC de origem : MAC do servidor
+IP de origem : IP do servidor
+IP de destino: 255.255.255.255
+IP: 192.168.10.3
+Identificador do servidor: IP do servidor
+Tamanho de lease (aluguel do IP): 72 horas
+Identificação do cliente: MAC do cliente
+
+Nessa parte o servidor apesar de ter o ip do cliente envia a mesngaem com destino broadcast também tanto em mac quanto em ip de destino, mas o identifcador do cliente continua sendo o mac do cliente e agora a mensagem contém o ip que foi pedido no request
+
+
+Gratuitos arp:
+
+a máquina manda uma mensagem arp com o ip enviado pelo server como sendo o ip de destino 
+o mac de destino é broadcast e e o mac de origem é o do pc que envia o gratuitos
+
+
+Se a resposta for recebida é porque o ip está duplicado
+
+O cliente não precisa de configurações especiais apenas indicar que será usado o serviço dhcp para atribuir endereço ip para sua interface de rede
+
+No servidor requer intalação do servidor, configuração do servidor e ativação dos escopos definidos assim como verificações de configuração
+
+Outras mensagens dhcp:
+dhcp negative ack ->(server) quando o ip enviado no request é inválido ou o server não tem aquele endereço para atribuir
+dhcp decline ->(cliente) quando o cliente recusa o ip ofertado por ele ser inválido ( testou no gratuitos arp)
+dhcp release p> (cliente) não precia mais do ip oferecido
+dhcp inform -> (cliente) quando o ip foi atrubuido manualmente mas o cliente quer receber outros parametros do dhcp como dns e gateway ai o servidor envia em unicast o dhcp ack

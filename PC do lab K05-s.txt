@@ -1,0 +1,4 @@
+endereço ipv4 : 10.0.84.19
+mascara : 255.255.255.0
+
+mac: c8:4b:d6:3f:a0:82

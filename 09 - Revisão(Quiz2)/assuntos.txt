@@ -1,0 +1,3 @@
+DHCP,DNS
+
+revisar quiz passado e estudar algumas mascaras de rede

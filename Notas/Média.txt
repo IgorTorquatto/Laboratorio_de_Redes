@@ -1,0 +1,25 @@
+Prática: composta pelas notas de tarefas em sala + apresentação.
+
+A média das notas de tarefas + apresentação será a nota N1.
+
+Teórica: composta pelos Quiz.
+
+Teremos 5 Quiz com os seguintes pesos:
+
+Quiz 1 = peso 1
+
+Quiz 2 = peso 1 
+
+Quiz 3 = peso 2
+
+Quiz 4 = peso 2
+
+Quiz 5 = peso 3
+
+A médias ponderada dos Quiz será a nota N2.
+
+ 
+
+A média final será:
+
+MF = (N1+N2)/2

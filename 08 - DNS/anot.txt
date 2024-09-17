@@ -1,0 +1,22 @@
+10.0.0.4 rede
+.5 switch
+.6 switch 2
+.7 broadcast
+
+.12 rede
+.13 switch
+.14 roteador
+.15 broad
+
+
+.8 rede
+.9 switch
+.10 roteador
+.11 broad
+
+ip routing
+router rip
+version 2
+network ...
+
+o record do site tem q estar no server privado
