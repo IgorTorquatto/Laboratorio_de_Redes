@@ -1,0 +1,11 @@
+pings em modo simulação
+todos na mesma simulacao
+
+ping pc novo nao funciona
+
+nat dinamico nao deve aparcer portas
+erro cisco
+
+da certo 3 pcs o 4 nao
+
+depois : é a porta

@@ -1,0 +1,6 @@
+226
+
+EXTRA: as configs internas piores que externas tem que se configurar o firewall para funcionar 
+
+acesso serviço web
+na interface outside
