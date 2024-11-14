@@ -1,0 +1,1 @@
+Bob  quer enviar uma mensagem mas precisa que o servidor DNS esteja configurado para traduzir o nome para um endereço IP
