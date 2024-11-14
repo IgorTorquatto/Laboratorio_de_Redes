@@ -1,0 +1,9 @@
+ftp,aplicação
+certo
+hub ftp criptografia
+a porta 21/TCP apenas recebe conexões e outras portas TCP aleatórias apenas originam conexões.
+O método socket.bind(IP, PORT)
+sao corretas 1 e 3
+errado
+O TCP é orientado à conexão, enquanto o UDP não é.
+errado filezilla
