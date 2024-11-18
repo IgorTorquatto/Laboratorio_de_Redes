@@ -1,0 +1,6 @@
+1- Executar código server pelo terminal
+2- Abrir outros terminais e executar o código do client
+3- O servidor receberá conexões de mais de um client
+4- Podemos mandar mensagens e receber respostas do servidor
+5- Digitar "sair" para encerrar a conexão com o servidor
+6- No terminal do servidor temos o Ip e porta de conexão de cada client

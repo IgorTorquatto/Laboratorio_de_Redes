@@ -1,0 +1,23 @@
+Desenvolver servidor web que recebe requisições de dois clientes
+
+Dois navegadores em máquinas web diferentes são clientes
+Aplicação em um computador que hospeda um site é o servidor
+
+
+O cliente envia uma requisição HTTP para o server e esse responde com o arquivo desejado
+A resposta contém informações sobre o status da requisição e o arquivo solicitado
+Para atender dois clientes ao mesmo tempo precisa-se implementar threads
+
+
+Temos o código do servidor com thread sem o serviço http estar implementado ainda
+
+Podemos usar o código cliente TCP testado em labs anteriores ou criar um código client do zero para vermos se o servidor responde a vários clients ao mesmo tempo
+
+
+
+Implementar o server web:
+Precisamos implementar um server web que recebe requisições de um navegador(client) e retorna um hello world
+Usa-se o código do servidor com thread e modifica-se a função clientethread() para tudo poder funcionar
+
+Executamos o código do srvidor e no navegador digitamos http://localhost:1234/hello
+para que assim recebamos a resposta

@@ -1,0 +1,4 @@
+1 - Executar server.py
+2- Acessar pelo navegador http://localhost:1234/hello
+3- Ver a mensagem de "hello world" no navegador
+4- No terminal do servidor temos os logs de conexão e da requisição
